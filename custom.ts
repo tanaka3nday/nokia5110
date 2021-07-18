@@ -38,11 +38,11 @@ namespace custom {
     
     /**
      * 表示開始のY座標を指定します
-     * @param n describe parameter here, eg: 5
+     * @param y describe parameter here, eg: 5
      */
     //% block="Y座標"
-    export function LSetY(n: number): void{
-        LCommand([0x40 + n]);
+    export function LSetY(y: number): void{
+        LCommand([0x40 + y]);
     }
 
     /**
