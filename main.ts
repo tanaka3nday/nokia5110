@@ -1,4 +1,5 @@
 function LSetY (y: number) {
+    serial.writeLine('LSetY');
     LCommand([0x40+y]);
 }
 function LClear () {
@@ -6,35 +7,41 @@ function LClear () {
         LWrt(1,[0x00]);
     }
 }
+
 function init () {
     pins.digitalWritePin(DigitalPin.P0, 0)
+    pins.digitalWritePin(DigitalPin.P0, 1)
+    serial.writeLine('init');
     LCommand(LInit);
 }
+
 function LSetX (x: number) {
+    serial.writeLine('LSetX');
     LCommand([0x80 + x]);
 }
 function LPrint (message: string) {
     let text= [];
     for (let i = 0; i <= message.length - 1; i++) {
         let s = message[i].charCodeAt(0);
-        let j = (s - 32) * 5;
+        let c = (s - 32) * 5;
         for (let k = 0; k < 5; k++) {
-            text.push(font[i + j])
+            text.push(font[c + k])
         }
     }
+    serial.writeLine('LPrint');
     LWrt(1,text);
 }
-let code = 0
 
-
-function LWrt (dc: number, data: int8[]) {
-    pins.digitalWritePin(DigitalPin.P8, dc)
-    pins.digitalWritePin(DigitalPin.P1,0)
+function LWrt (dc: number, data: number[]) {
+    pins.digitalWritePin(DigitalPin.P8, dc);
+    pins.digitalWritePin(DigitalPin.P1,0);
     data.forEach(function(s){
         pins.spiWrite(s);
-    })
+        serial.writeValue("w",s);
+    }) 
     pins.digitalWritePin(DigitalPin.P1,1)
 }
+
 function LCommand(data: int8[]){
     LWrt(0,data);
 }
@@ -535,10 +542,15 @@ pins.digitalWritePin(DigitalPin.P1, 0)
 pins.digitalWritePin(DigitalPin.P1, 1)
 pins.spiPins(DigitalPin.P15, DigitalPin.P14, DigitalPin.P13)
 pins.spiFrequency(328125)
-LClear()
+
+init();
+
+LClear();
 basic.forever(function () {
-    LPrint("Hello World")
-    LSetX(2)
-    LSetY(25)
-    LPrint("play start")
+    LSetX(0);
+    LSetY(0);
+    LPrint("Hello World");
+    LSetX(2);
+    LSetY(25);
+    LPrint("play start");
 })
