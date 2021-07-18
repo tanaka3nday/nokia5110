@@ -1,82 +1,50 @@
-
-/**
-* このファイルを使って、独自の関数やブロックを定義してください。
-* 詳しくはこちらを参照してください：https://makecode.microbit.org/blocks/custom
-*/
-
-enum MyEnum {
-    //% block="one"
-    One,
-    //% block="two"
-    Two
-}
-
 /**
  * Custom blocks
  */
 //% weight=100 color=#0fbc11 icon=""
 namespace custom {
-    /**
-     * TODO: describe your function here
-     * @param n describe parameter here, eg: 5
-     * @param s describe parameter here, eg: "Hello"
-     * @param e describe parameter here
-     */
-    //% block
-    export function foo(n: number, s: string, e: MyEnum): void {
-        // Add code here
-    }
-
-    /**
-     * TODO: describe your function here
-     * @param value describe value here, eg: 5
-     */
-    //% block
-    export function fib(value: number): number {
-        return value <= 1 ? value : fib(value -1) + fib(value - 2);
-    }
-    
-    /**
-     * 表示開始のY座標を指定します
+   /**
+     * set start Y
      * @param y describe parameter here, eg: 5
      */
-    //% block="Y座標"
+    //% block
     export function LSetY(y: number): void{
         LCommand([0x40 + y]);
+        return 
     }
 
     /**
-     * 画面表示を全消去します
+     * screen clear
      */
-    //% block="画面クリア"
-    export function LClear():void {
+    //% block
+    export function LClear(): void{
         for (let index = 0; index < 504; index++) {
             LWrt(1, [0x00]);
         }
     }
     /**
-     * LCDの初期化をします。最初に実行してください。
+     * Initialize LCD. Call at onece.
      */
-    //% block="LCD初期化"
+    //% block
     export function init(): void {
         pins.digitalWritePin(DigitalPin.P0, 0)
         pins.digitalWritePin(DigitalPin.P0, 1)
         LCommand(LInit);
     }
     /**
-     * 表示開始のX座標を指定します。
+     * set start X
      * @param x describe parameter here, eg: 5
      */
-    //% block="X座標"
+    //% block
     export function LSetX(x: number): void {
         LCommand([0x80 + x]);
     }
 
     /**
-     * 文字列を表示します
+     * show strings
      * @param message describe parameter here, eg: "HELLO"
      */
-    //% block="文字表示"
+    //% block
     export function LPrint(message: string): void {
         let text = [];
         for (let i = 0; i <= message.length - 1; i++) {
@@ -90,7 +58,7 @@ namespace custom {
     }
     
     /**
-     * 文字列を表示します
+     * write spi
      * @param dc describe parameter here, eg: 0
      * @param data describe parameter here, eg: [array]
      */
