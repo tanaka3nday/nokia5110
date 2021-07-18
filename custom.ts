@@ -35,13 +35,13 @@ namespace custom {
     export function fib(value: number): number {
         return value <= 1 ? value : fib(value -1) + fib(value - 2);
     }
+    
     /**
      * 表示開始のY座標を指定します
      * @param y describe parameter here, eg: 5
      */
     //% block="Y座標"
-    export function LSetY(y: number) {
-        serial.writeLine('LSetY');
+    export function LSetY(y: number): void {
         LCommand([0x40 + y]);
     }
 
@@ -49,7 +49,7 @@ namespace custom {
      * 画面表示を全消去します
      */
     //% block="画面クリア"
-    export function LClear() {
+    export function LClear():void {
         for (let index = 0; index < 504; index++) {
             LWrt(1, [0x00]);
         }
@@ -58,10 +58,9 @@ namespace custom {
      * LCDの初期化をします。最初に実行してください。
      */
     //% block="LCD初期化"
-    export function init() {
+    export function init(): void {
         pins.digitalWritePin(DigitalPin.P0, 0)
         pins.digitalWritePin(DigitalPin.P0, 1)
-        serial.writeLine('init');
         LCommand(LInit);
     }
     /**
@@ -69,8 +68,7 @@ namespace custom {
      * @param x describe parameter here, eg: 5
      */
     //% block="X座標"
-    export function LSetX(x: number) {
-        serial.writeLine('LSetX');
+    export function LSetX(x: number): void {
         LCommand([0x80 + x]);
     }
 
@@ -79,7 +77,7 @@ namespace custom {
      * @param message describe parameter here, eg: "HELLO"
      */
     //% block="文字表示"
-    export function LPrint(message: string) {
+    export function LPrint(message: string): void {
         let text = [];
         for (let i = 0; i <= message.length - 1; i++) {
             let s = message[i].charCodeAt(0);
@@ -88,7 +86,6 @@ namespace custom {
                 text.push(font[c + k])
             }
         }
-        serial.writeLine('LPrint');
         LWrt(1, text);
     }
     
@@ -98,18 +95,17 @@ namespace custom {
      * @param data describe parameter here, eg: [array]
      */
     //% block
-    function LWrt(dc: number, data: number[]) {
+    function LWrt(dc: number, data: number[]): void {
         pins.digitalWritePin(DigitalPin.P8, dc);
         pins.digitalWritePin(DigitalPin.P1, 0);
         data.forEach(function (s) {
             pins.spiWrite(s);
-            serial.writeValue("w", s);
         })
         pins.digitalWritePin(DigitalPin.P1, 1)
     }
     
     //% block
-    function LCommand(data: int8[]) {
+    function LCommand(data: int8[]): void {
         LWrt(0, data);
     }
 
