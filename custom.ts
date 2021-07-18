@@ -35,19 +35,28 @@ namespace custom {
     export function fib(value: number): number {
         return value <= 1 ? value : fib(value -1) + fib(value - 2);
     }
+    /**
+     * 表示開始のY座標を指定します
+     * @param y describe parameter here, eg: 5
+     */
     //% block="Y座標"
     export function LSetY(y: number) {
         serial.writeLine('LSetY');
         LCommand([0x40 + y]);
     }
 
+    /**
+     * 画面表示を全消去します
+     */
     //% block="画面クリア"
     export function LClear() {
         for (let index = 0; index < 504; index++) {
             LWrt(1, [0x00]);
         }
     }
-
+    /**
+     * LCDの初期化をします。最初に実行してください。
+     */
     //% block="LCD初期化"
     export function init() {
         pins.digitalWritePin(DigitalPin.P0, 0)
@@ -55,12 +64,20 @@ namespace custom {
         serial.writeLine('init');
         LCommand(LInit);
     }
-
+    /**
+     * 表示開始のX座標を指定します。
+     * @param x describe parameter here, eg: 5
+     */
     //% block="X座標"
     export function LSetX(x: number) {
         serial.writeLine('LSetX');
         LCommand([0x80 + x]);
     }
+
+    /**
+     * 文字列を表示します
+     * @param message describe parameter here, eg: "HELLO"
+     */
     //% block="文字表示"
     export function LPrint(message: string) {
         let text = [];
@@ -74,7 +91,12 @@ namespace custom {
         serial.writeLine('LPrint');
         LWrt(1, text);
     }
-
+    
+    /**
+     * 文字列を表示します
+     * @param dc describe parameter here, eg: 0
+     * @param data describe parameter here, eg: [array]
+     */
     //% block
     function LWrt(dc: number, data: number[]) {
         pins.digitalWritePin(DigitalPin.P8, dc);
