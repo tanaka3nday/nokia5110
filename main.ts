@@ -14,18 +14,19 @@ function LSetX (x: number) {
     LCommand([0x80 + x]);
 }
 function LPrint (message: string) {
+    let text= [];
     for (let i = 0; i <= message.length - 1; i++) {
         let s = message[i].charCodeAt(0);
-code = (s - 32) * 5
-        for (let j = 0; j <= 4; j++) {
+        let j = (s - 32) * 5;
+        for (let k = 0; k < 5; k++) {
             text.push(font[i + j])
         }
     }
     LWrt(1,text);
 }
 let code = 0
-let font: number[] = []
-let text: number[] = []
+
+
 function LWrt (dc: number, data: int8[]) {
     pins.digitalWritePin(DigitalPin.P8, dc)
     pins.digitalWritePin(DigitalPin.P1,0)
@@ -37,7 +38,7 @@ function LWrt (dc: number, data: int8[]) {
 function LCommand(data: int8[]){
     LWrt(0,data);
 }
-font = [
+const font = [
 0,
 0,
 0,
@@ -519,7 +520,8 @@ font = [
 0,
 0
 ]
-let LInit = [
+
+const LInit = [
 33,
 191,
 4,
