@@ -1,3 +1,5 @@
 basic.forever(function () {
-    custom.LSetX(10)
+    custom.foo(4, "へろへろ", MyEnum.One)
+    custom.LSetY(10)
+custom.LSetX(10)
 })
