@@ -63,7 +63,7 @@ namespace custom {
      */
     //% block
     export function set_vop(value: number): void {
-        LCommmand([0x21, x80+value]);
+        LCommand([0x21, 0x80+value]);
     }   
    
     /**
