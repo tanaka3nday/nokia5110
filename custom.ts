@@ -56,7 +56,16 @@ namespace custom {
         }
         LWrt(1, text);
     }
-    
+
+    /**
+     * set Vop
+     * @param vop describe parameter here, eg: 53 (<127)
+     */
+    //% block
+    export function set_vop(value: number): void {
+        LCommmand([0x21, x80+value]);
+    }   
+   
     /**
      * write spi
      * @param dc describe parameter here, eg: 0
